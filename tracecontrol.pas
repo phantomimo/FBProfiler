@@ -188,8 +188,8 @@ begin
   FDatabaseFilter := '';
   FVersion := 300;
   FParams := TTraceConfigParams.Create;
-  FParams.Add(TTraceConfigParam.Create('include_filter', '', ptString));
-  FParams.Add(TTraceConfigParam.Create('exclude_filter', '', ptString));
+  //FParams.Add(TTraceConfigParam.Create('include_filter', '', ptString));
+  //FParams.Add(TTraceConfigParam.Create('exclude_filter', '', ptString));
   FParams.Add(TTraceConfigParam.Create('log_connections', 'false', ptBoolean));
   FParams.Add(TTraceConfigParam.Create('connection_id', '0', ptInteger));
   FParams.Add(TTraceConfigParam.Create('log_transactions', 'false', ptBoolean));
@@ -359,6 +359,7 @@ begin
         IfThen(FConfig.Password = '', 'blank password', 'password specified')]);
       FTraceService.Protocol := TCP;
       FTraceService.Configuration.Clear;
+      //FTraceService.Version := IntToStr(FConfig.Version);
       FTraceService.Version := FConfig.Version;
 
       if FConfig.Version >= 300 then

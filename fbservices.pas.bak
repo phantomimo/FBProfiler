@@ -101,6 +101,7 @@ type
     FSessionId: integer;
     FTraceName: string;
     FUserName: string;
+    FVersion: string;
     // events
     FOnTraceEvent: TNotifyFBTraceEvent;
     FOnTraceMessage: TNotifyFBTraceMessageEvent;
@@ -123,7 +124,7 @@ type
     procedure InternalStart(StartParams: TISCParams);
     procedure ProcessTraceMessage(const TraceMsg: string);
     procedure PushTraceEvent(const TraceEvent: TFBTraceEvent);
-    procedure LoadFbLibrary(var libname: string);
+//    procedure LoadFbLibrary(var libname: string);
   public
     constructor Create(CreateSuspended: boolean;
       const StackSize: SizeUInt = DefaultStackSize);
@@ -141,6 +142,7 @@ type
     property Protocol: TProtocol read FProtocol write SetProtocol default TCP;
     property ServerName: string read FServerName write FServerName;
     property UserName: string read FUserName write FUserName;
+    property Version: string read FVersion write FVersion;
     // Events
     {.$HINT Use messages queue to avoid collisions because of unknown responce delay of event handler}
     property OnTraceEvent: TNotifyFBTraceEvent

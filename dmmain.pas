@@ -149,7 +149,7 @@ begin
   DsCurrTrace.FieldByName('AppName').AsString := TraceEvent.ApplicationName;
   DsCurrTrace.FieldByName('RawSource').AsString := TraceEvent.Lines.Text;
   // Stats
-  DsCurrTrace.FieldByName('Duration').AsInteger := TraceEvent.Stats.TimeMsec;
+  DsCurrTrace.FieldByName('Duration').AsFloat := TraceEvent.Stats.TimeMsec;
   DsCurrTrace.FieldByName('Reads').AsInteger := TraceEvent.Stats.Reads;
   DsCurrTrace.FieldByName('Writes').AsInteger := TraceEvent.Stats.Writes;
   DsCurrTrace.FieldByName('Fetches').AsInteger := TraceEvent.Stats.Fetches;

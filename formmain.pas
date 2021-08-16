@@ -28,16 +28,16 @@ unit FormMain;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
-  ActnList, Menus, StdActns, ComCtrls, ExtCtrls, DBGrids, DBCtrls,
-  FBTraceEvents, XMLPropStorage,
-  TraceControl;
+  Classes, SysUtils, FileUtil, SynEdit, SynHighlighterSQL, Forms, Controls,
+  Graphics, Dialogs, ActnList, Menus, StdActns, ComCtrls, ExtCtrls, DBGrids,
+  DBCtrls, FBTraceEvents, XMLPropStorage, EditBtn, TraceControl, DB;
 
 type
 
   { TFrmMain }
 
   TFrmMain = class(TForm)
+    ActionFilter: TAction;
     ActionFindNext: TAction;
     ActionFind: TAction;
     ActionClearTrace: TAction;
@@ -54,6 +54,7 @@ type
     DBMemoPlan: TDBMemo;
     DBMemoRaw: TDBMemo;
     DBMemoSQL: TDBMemo;
+    FilterEdit: TEditButton;
     ImageListMain: TImageList;
     MenuItem1: TMenuItem;
     MenuItem10: TMenuItem;
@@ -74,6 +75,9 @@ type
     MenuItem8: TMenuItem;
     MenuMain: TMainMenu;
     DlgLoadTrace: TOpenDialog;
+    pnlFilter: TPanel;
+    SynEdit1: TSynEdit;
+    SynSQLSyn1: TSynSQLSyn;
     TabsDetails: TPageControl;
     PanelDetails: TPanel;
     PanelList: TPanel;
@@ -92,6 +96,7 @@ type
     ToolButton6: TToolButton;
     ToolButton7: TToolButton;
     procedure ActionClearTraceExecute(Sender: TObject);
+    procedure ActionFilterExecute(Sender: TObject);
     procedure ActionFindExecute(Sender: TObject);
     procedure ActionFindNextExecute(Sender: TObject);
     procedure ActionLoadTraceExecute(Sender: TObject);
@@ -110,6 +115,8 @@ type
     procedure ExceptionHanler(Sender: TObject; E: Exception);
     procedure TraceErrorHandler(Sender: TObject; const E: Exception);
     procedure ShowTraceConfDialog(Config: TTraceConfig);
+    procedure DataChange(Sender: TObject; Field: TField);
+    function GetAppVersion: string;
   public
     procedure ShowStatus;
   end;
@@ -121,7 +128,11 @@ implementation
 
 uses
   AppServices, DMMain, FormAbout, FormSearchTrace, FormEditTrace, FormSaveTrace,
-  TraceFiles;
+  TraceFiles, VersionTypes, LCLIntf;
+
+const
+
+  APPLICATION_NAME = 'Firebird profiler';
 
 {$R *.lfm}
 
@@ -141,6 +152,7 @@ begin
   Application.OnException := @ExceptionHanler;
   ActionOpenTraceConf.Dialog.Filter := TTraceConfFile.GetDlgFilter;
   DbgTraces.DataSource := DataModuleMain.SrcCurrTrace;
+  DbgTraces.DataSource.OnDataChange:= @DataChange;
   SetDBMemoFonts(DBMemoSQL);
   SetDBMemoFonts(DBMemoPlan);
   SetDBMemoFonts(DBMemoRaw);
@@ -153,6 +165,7 @@ begin
   TabsDetails.ActivePage := TabSQL;
   ShowStatus;
   GetTraces.OnTraceError := @TraceErrorHandler;
+  Caption:= APPLICATION_NAME + ' ' + GetAppVersion;
 end;
 
 procedure TFrmMain.CheckFindTraceResult(Found: boolean);
@@ -182,6 +195,20 @@ begin
     Form.Release;
     ShowStatus;
   end;
+end;
+
+procedure TFrmMain.DataChange(Sender: TObject; Field: TField);
+begin
+  SynEdit1.Text:= DataModuleMain.SrcCurrTrace.DataSet.FieldByName('SQL').AsString;
+end;
+
+function TFrmMain.GetAppVersion: string;
+var
+  VI: TVersionFixedInfo;
+begin
+  VI := GetVersionInfo;
+  Result:= Format('v.%d.%d.%d build %d',
+           [VI.FileVersion[0], VI.FileVersion[1], VI.FileVersion[2], VI.FileVersion[3]]) + LineEnding;
 end;
 
 procedure TFrmMain.ExceptionHanler(Sender: TObject; E: Exception);
@@ -282,6 +309,16 @@ begin
     DataModuleMain.ClearTrace;
     if GetTraces.CurrentTrace <> nil then
       GetTraces.CurrentTrace.ClearLog;
+  end;
+end;
+
+procedure TFrmMain.ActionFilterExecute(Sender: TObject);
+begin
+  DataModuleMain.SrcCurrTrace.DataSet.Filtered:= False;
+  if Trim(FilterEdit.Text) <> EmptyStr then
+  begin
+    DataModuleMain.SrcCurrTrace.DataSet.Filter:= 'AppName = ' + QuotedStr('*' + FilterEdit.Text + '*');
+    DataModuleMain.SrcCurrTrace.DataSet.Filtered:= True;
   end;
 end;
 

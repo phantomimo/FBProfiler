@@ -2,19 +2,19 @@ object DataModuleMain: TDataModuleMain
   OnCreate = DataModuleCreate
   OldCreateOrder = False
   Height = 285
-  HorizontalOffset = 379
-  VerticalOffset = 253
+  HorizontalOffset = 277
+  VerticalOffset = 187
   Width = 435
   object SrcCurrTrace: TDataSource
     DataSet = DsCurrTrace
-    left = 56
-    top = 32
+    Left = 56
+    Top = 32
   end
   object DsCurrTrace: TDbf
     IndexDefs = <>
     TableLevel = 4
     FilterOptions = []
-    left = 56
-    top = 96
+    Left = 56
+    Top = 96
   end
 end

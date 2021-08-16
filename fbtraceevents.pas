@@ -108,7 +108,7 @@ type
     FMarks: integer;
     FReads: integer;
     FRecordsFetched: integer;
-    FTimeMsec: integer;
+    FTimeMsec: Real;
     FWrites: integer;
   public
     constructor Create;
@@ -116,7 +116,7 @@ type
     property Marks: integer read FMarks;
     property Reads: integer read FReads;
     property RecordsFetched: integer read FRecordsFetched;
-    property TimeMsec: integer read FTimeMsec;
+    property TimeMsec: Real read FTimeMsec;
     property Writes: integer read FWrites;
   end;
 

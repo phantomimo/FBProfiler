@@ -1,7 +1,7 @@
 object FrmAbout: TFrmAbout
-  Left = 366
+  Left = 267
   Height = 199
-  Top = 186
+  Top = 139
   Width = 416
   ActiveControl = BtnClose
   BorderIcons = []
@@ -11,7 +11,7 @@ object FrmAbout: TFrmAbout
   ClientWidth = 416
   OnCreate = FormCreate
   Position = poMainFormCenter
-  LCLVersion = '1.6.0.4'
+  LCLVersion = '2.2.0.1'
   object BtnClose: TButton
     Left = 325
     Height = 48
@@ -577,7 +577,6 @@ object FrmAbout: TFrmAbout
     Width = 229
     Caption = 'https://sourceforge.net/projects/fbprofiler/'
     Font.Style = [fsUnderline]
-    ParentColor = False
     ParentFont = False
     OnClick = LblBelairLinkClick
   end
@@ -587,7 +586,6 @@ object FrmAbout: TFrmAbout
     Top = 88
     Width = 82
     Caption = 'Original Project'
-    ParentColor = False
   end
   object LblBelairLink1: TLabel
     Cursor = crHandPoint
@@ -597,7 +595,6 @@ object FrmAbout: TFrmAbout
     Width = 210
     Caption = 'https://github.com/kattunga/FBProfiler'
     Font.Style = [fsUnderline]
-    ParentColor = False
     ParentFont = False
     OnClick = LblBelairLinkClick
   end
@@ -607,6 +604,5 @@ object FrmAbout: TFrmAbout
     Top = 144
     Width = 171
     Caption = 'New version with improvements'
-    ParentColor = False
   end
 end
